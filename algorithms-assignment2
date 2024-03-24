@@ -1,0 +1,66 @@
+import pygame
+
+pygame.mixer.init()
+sortSoundEffect = pygame.mixer.Sound('level-up.mp3')
+
+def splitArray(array):
+    if len(array) == 1:
+        print(array)
+        return [array], []
+    mid = len(array) // 2
+    leftArray = array[:mid]
+    rightArray = array[mid:]
+    print("Splitting into:", leftArray, "and", rightArray)
+
+    sortSoundEffect.play()
+    pygame.time.delay(1500)
+    
+    leftSplit, rightSplit = splitArray(leftArray), splitArray(rightArray)
+    return leftSplit[0] + rightSplit[0], leftSplit[1] + rightSplit[1]
+
+def mergeSort(arrayNumbers):
+    if len(arrayNumbers) > 1:
+        mid = len(arrayNumbers) // 2
+        firstHalf = arrayNumbers[:mid]
+        lastHalf = arrayNumbers[mid:]
+
+        mergeSort(firstHalf)
+        mergeSort(lastHalf)
+
+        merge(arrayNumbers, firstHalf, lastHalf)
+
+def merge(arrayNumbers, firstHalf, lastHalf):
+    print("Merging", firstHalf, "and", lastHalf, "into:")
+    sortSoundEffect.play()
+    pygame.time.delay(1500)
+    i = j = k = 0
+
+    while i < len(firstHalf) and j < len(lastHalf):
+        if firstHalf[i] < lastHalf[j]:
+            arrayNumbers[k] = firstHalf[i]
+            i += 1
+        else:
+            arrayNumbers[k] = lastHalf[j]
+            j += 1
+        k += 1
+
+    while i < len(firstHalf):
+        arrayNumbers[k] = firstHalf[i]
+        i += 1
+        k += 1
+
+    while j < len(lastHalf):
+        arrayNumbers[k] = lastHalf[j]
+        j += 1
+        k += 1
+
+    print(arrayNumbers)
+
+intInput = input("Enter Integers [SEPARATE INTEGERS BY SPACES]: ")
+arrayInput = list(map(int, intInput.split()))
+print("Array of the entered integers:", arrayInput)
+arraySplit = splitArray(arrayInput)
+mergeSort(arrayInput)
+print("Final sorted array:", arrayInput)
+sortSoundEffect.play()
+pygame.time.delay(1500)
